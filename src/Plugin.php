@@ -10,7 +10,7 @@ use Composer\Plugin\PluginInterface;
  * A Composer plugin to activate the installer for Jadu modules, etc
  *
 **/
-class InstallerPlugin implements PluginInterface
+class Plugin implements PluginInterface
 {
     public function activate(Composer $composer, IOInterface $io)
     {
