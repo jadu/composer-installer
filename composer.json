@@ -1,0 +1,21 @@
+{
+    "name": "jadu/composer-installer",
+    "description": "Handles the installation of modules, widgets, etc for Jadu CMS implementations",
+    "type": "composer-plugin",
+    "require": {
+        "composer-plugin-api": "^1.0"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Matt Dolan",
+            "email": "matt.dolan@jadu.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Jadu\\Composer": "src/"}
+    },
+    "extra": {
+        "class": "Jadu\\Composer\\Plugin"
+    }
+}
