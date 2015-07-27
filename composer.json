@@ -13,7 +13,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Jadu\\Composer": "src/"}
+        "psr-4": {"Jadu\\Composer\\": "src/"}
     },
     "extra": {
         "class": "Jadu\\Composer\\Plugin"
