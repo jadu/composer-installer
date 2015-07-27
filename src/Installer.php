@@ -4,6 +4,7 @@ namespace Jadu\Composer;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Composer\Repository\InstalledRepositoryInterface;
 
 /**
  * Installer for modules, widgets, etc for Jadu CMS
