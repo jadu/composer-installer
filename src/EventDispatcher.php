@@ -24,7 +24,7 @@ class EventDispatcher extends ComposerEventDispatcher {
     {
         $listeners = $this->getListeners($event);
 
-        $this->io->write('    Running scripts for ' . $this->package->getPrettyName() . \PHP_EOL);
+        $this->io->write('    Running scripts for ' . $this->package->getPrettyName() . '…' . \PHP_EOL . '    ');
 
         ob_start(array($this, 'ob_process'), 2);
         ob_implicit_flush(true);
@@ -39,9 +39,16 @@ class EventDispatcher extends ComposerEventDispatcher {
      * @param  string $output
      * @return string
      */
-    public function ob_process($output)
+    public function ob_process($input)
     {
-        return preg_replace('/(^|\\n)/', '$1    ', $output);
+        $output = array();
+        foreach (explode("\n", $input) as $line) {
+            if (mb_strlen($line) > Installer::CONSOLE_LINE_LENGTH) {
+                $line = implode("\n    ", str_split($line, $lineLength));
+            }
+            $output[] = '    ' . $line;
+        }
+        return implode("\n", $output);
     }
 
     /**

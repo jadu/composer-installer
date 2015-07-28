@@ -17,6 +17,8 @@ class Installer extends LibraryInstaller
 
     const MIGRATIONS_FOLDER = 'upgrades/migrations';
 
+    const CONSOLE_LINE_LENGTH = 80;
+
     protected $pathsToIgnore = array();
 
     /**
