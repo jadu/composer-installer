@@ -31,21 +31,41 @@ class Installer extends LibraryInstaller
         ));
     }
 
+    protected function doStuff($repo, $package)
+    {
+        $extra = $package->getExtra();
+        // $rootExtra = $this->composer->getPackage()->getExtra();
+
+        if (!isset($extra[self::EXTRA_KEY])) {
+            return;
+        }
+
+        $config = $extra[self::EXTRA_KEY];
+
+        if (isset($config['copy'])) {
+            $fileMover = new FileMover($this->io, $this->composer, $this);
+            $fileMover->copyFiles($config['copy']);
+        }
+
+        if (isset($config['scripts'])) {
+            // run any 'install' scripts
+            $eventDispatcher = new EventDispatcher($package, $this->composer, $this->io);
+            $eventDispatcher->dispatchScript('install', $this->devMode);
+        }
+
+        $migrationScripts = new MigrationScripts($this, $this->io);
+        $migrationScripts->copy();
+
+        die('dying so we don\'t complete the install');
+    }
+
     /**
      * {@inheritDoc}
      */
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo, $package);
-
-        // getInstallPath
-        // getPackageBasePath
-
-        print is_a($package,'Composer\\Package\\RootPackage') ? 'is root' : 'not root';
-        print "\n\n";
-        $extra = $package->getExtra();
-        var_dump($extra);
-
+        $this->doStuff($package);
     }
 
     /**
@@ -54,6 +74,7 @@ class Installer extends LibraryInstaller
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         parent::update($repo, $initial, $target);
+        $this->doStuff($target);
     }
 
     /**
