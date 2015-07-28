@@ -91,6 +91,8 @@ class Installer extends LibraryInstaller
 
     public function getInstallPath(PackageInterface $package)
     {
+        return getenv('COMPOSER');
+
         $targetDir = $package->getTargetDir();
 
         return $this->getPackageBasePath($package) . ($targetDir ? '/'.$targetDir : '');
