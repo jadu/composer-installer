@@ -12,6 +12,11 @@ use Composer\Repository\InstalledRepositoryInterface;
 class Installer extends LibraryInstaller
 {
 
+    // key within the composer.json extra array
+    const EXTRA_KEY = 'jadu-install';
+
+    const MIGRATIONS_FOLDER = 'upgrades/migrations';
+
     protected $pathsToIgnore = array();
 
     /**
