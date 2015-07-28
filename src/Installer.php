@@ -56,4 +56,19 @@ class Installer extends LibraryInstaller
         parent::uninstall($repo, $package);
     }
 
+
+    public function getInstallPath(PackageInterface $package)
+    {
+        $targetDir = $package->getTargetDir();
+
+        return $this->getPackageBasePath($package) . ($targetDir ? '/'.$targetDir : '');
+    }
+
+    public function getPackageBasePath(PackageInterface $package)
+    {
+        $this->initializeVendorDir();
+
+        return ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+    }
+
 }
