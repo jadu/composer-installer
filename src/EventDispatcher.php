@@ -45,7 +45,7 @@ class EventDispatcher extends ComposerEventDispatcher {
 
         foreach ($eventScripts as &$script) {
             // for any shell scripts, first cd into package dir
-            if (is_string($callable) && !$this->isPhpScript($callable)) {
+            if (is_string($script) && !$this->isPhpScript($script)) {
                 $script = 'cd ' . escapeshellarg($packageBasePath) . ' && ' . $script;
             }
         }
