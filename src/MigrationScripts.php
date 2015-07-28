@@ -34,7 +34,7 @@ class MigrationScripts {
             return 0;
         }
 
-        $rootMigrationsFolder = $this->installer->getInstallPath($this->composer->getPackage()) . '/' . Installer::MIGRATIONS_FOLDER;
+        $rootMigrationsFolder = $this->installer->getRootPath() . '/' . Installer::MIGRATIONS_FOLDER;
         if (!is_dir($rootMigrationsFolder)) {
             $this->io->writeError("    Error: Migrations folder doesn't exist in $rootMigrationsFolder");
             return false;

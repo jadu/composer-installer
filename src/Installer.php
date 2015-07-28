@@ -91,8 +91,6 @@ class Installer extends LibraryInstaller
 
     public function getInstallPath(PackageInterface $package)
     {
-        return getenv('COMPOSER');
-
         $targetDir = $package->getTargetDir();
 
         return $this->getPackageBasePath($package) . ($targetDir ? '/'.$targetDir : '');
@@ -103,6 +101,11 @@ class Installer extends LibraryInstaller
         $this->initializeVendorDir();
 
         return ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+    }
+
+    public function getRootPath()
+    {
+        return getcwd();
     }
 
     /**************************************************************************/
@@ -118,7 +121,7 @@ class Installer extends LibraryInstaller
 
     protected function processGitIgnore()
     {
-        $gitIgnore = new GitIgnore($this->getInstallPath($this->composer->getPackage()) . '/.gitignore');
+        $gitIgnore = new GitIgnore($this->getRootPath() . '/.gitignore');
         $count = $gitIgnore->addFiles($this->pathsToIgnore);
         if ($count) {
             $this->io->write(sprintf('    %d %s added to .gitignore', $count, $count == 1 ? 'path' : 'paths'));

@@ -45,7 +45,7 @@ class FileMover {
     public function copyFile($relativeSource, $relativeDest, $overwrite, $gitIgnore)
     {
         $source = $this->installer->getPackageBasePath($this->package) . '/' . $relativeSource;
-        $dest = $this->installer->getInstallPath($this->composer->getPackage()) . '/' . $relativeDest;
+        $dest = $this->installer->getRootPath() . '/' . $relativeDest;
 
         $this->io->write("    Copying $source to $dest");
         if (!file_exists($source)) {
