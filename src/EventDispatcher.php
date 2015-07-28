@@ -44,7 +44,7 @@ class EventDispatcher extends ComposerEventDispatcher {
         $output = array();
         foreach (explode("\n", $input) as $line) {
             if (mb_strlen($line) > Installer::CONSOLE_LINE_LENGTH) {
-                $line = implode("\n    ", str_split($line, $lineLength));
+                $line = implode("\n    ", str_split($line, Installer::CONSOLE_LINE_LENGTH));
             }
             $output[] = '    ' . $line;
         }
