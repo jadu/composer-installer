@@ -42,12 +42,13 @@ class EventDispatcher extends ComposerEventDispatcher {
     public function ob_process($input)
     {
         $output = array();
-        foreach (explode("\n", $input) as $line) {
-            if (strlen($line) > Installer::CONSOLE_LINE_LENGTH) {
-                $words = preg_split("/\s/", $line);
+        $lines = explode("\n", $input);
+        foreach ($lines as $line) {
+            if (mb_strlen($line) > Installer::CONSOLE_LINE_LENGTH) {
+                $words = mb_split("\s", $line);
                 $line = '';
                 while ($words) {
-                    if (strlen($line) + strlen(reset($words)) <= Installer::CONSOLE_LINE_LENGTH) {
+                    if (mb_strlen($line) + mb_strlen(reset($words)) <= Installer::CONSOLE_LINE_LENGTH) {
                         $word = array_shift($words);
                         if ($line != '') {
                             $line .= ' ';
