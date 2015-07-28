@@ -72,7 +72,10 @@ class PermissionsHelper {
     protected function write($lines)
     {
         // ensure the folder exists
-        mkdir(dirname($this->permissionsFilePath), 0755, true);
+        $permissionsFolder = dirname($this->permissionsFilePath);
+        if (!is_dir($permissionsFolder)) {
+            mkdir($permissionsFolder, 0755, true);
+        }
 
         $file = fopen($this->permissionsFilePath, 'w');
         foreach ($lines as $filename => $permissions) {
