@@ -30,7 +30,7 @@ class FileMover {
             }
         }
 
-        $this->io->write(sprintf('    %d %s copied', $copyCount, $copyCount == 1 ? 'file' : 'files'));
+        $this->io->write(sprintf('    %d %s copied', $copyCount, $copyCount == 1 ? 'file/folder' : 'files/folders'));
         return $copyCount;
     }
 
@@ -47,7 +47,6 @@ class FileMover {
         $source = $this->installer->getPackageBasePath($this->package) . '/' . $relativeSource;
         $dest = $this->installer->getRootPath() . '/' . $relativeDest;
 
-        $this->io->write("    Copying $source to $dest");
         if (!file_exists($source)) {
             throw new \RuntimeException("File to copy doesn't exist: $source");
         }
