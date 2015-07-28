@@ -6,8 +6,8 @@ Actions
  - write .gitignore for anything we add
  - run scripts to do custom things
  - copy migration scripts into upgrades/migrations
-
  - ensures x permissions -> write to config/permission/custom
+
  - add to build.xml
 
 Examples
