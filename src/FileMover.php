@@ -47,6 +47,7 @@ class FileMover {
         $source = $this->installer->getPackageBasePath($this->package) . '/' . $relativeSource;
         $dest = $this->installer->getInstallPath($this->package) . '/' . $relativeDest;
 
+        $this->io->write("    Copying $source to $dest");
         if (!file_exists($source)) {
             throw new \RuntimeException("File to copy doesn't exist: $source");
         }
@@ -61,6 +62,7 @@ class FileMover {
             if (is_dir($dest)) {
                 if (!self::unlinkFolder($dest)) {
                     $this->io->writeError("    Existing folder could not be removed: $dest");
+                    return false;
                 }
             }
             $success = self::copyFolder($source, $dest);
