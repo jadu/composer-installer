@@ -65,7 +65,7 @@ class Installer extends LibraryInstaller
     public function install(InstalledRepositoryInterface $repo, PackageInterface $package)
     {
         parent::install($repo, $package);
-        $this->doStuff($package);
+        $this->doStuff($repo, $package);
     }
 
     /**
@@ -74,7 +74,7 @@ class Installer extends LibraryInstaller
     public function update(InstalledRepositoryInterface $repo, PackageInterface $initial, PackageInterface $target)
     {
         parent::update($repo, $initial, $target);
-        $this->doStuff($target);
+        $this->doStuff($repo, $target);
     }
 
     /**
