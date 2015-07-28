@@ -56,6 +56,8 @@ class Installer extends LibraryInstaller
         $migrationScripts = new MigrationScripts($package, $this->io, $this);
         $migrationScripts->copy();
 
+        $this->processGitIgnore();
+
         die('dying so we don\'t complete the install');
     }
 
