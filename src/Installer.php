@@ -43,7 +43,7 @@ class Installer extends LibraryInstaller
         $config = $extra[self::EXTRA_KEY];
 
         if (isset($config['copy'])) {
-            $fileMover = new FileMover($this->io, $this->composer, $this);
+            $fileMover = new FileMover($package, $this->io, $this->composer, $this);
             $fileMover->copyFiles($config['copy']);
         }
 
