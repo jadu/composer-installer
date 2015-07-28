@@ -11,6 +11,9 @@ use Composer\Repository\InstalledRepositoryInterface;
  */
 class Installer extends LibraryInstaller
 {
+
+    protected $pathsToIgnore = array();
+
     /**
      * {@inheritDoc}
      */
@@ -69,6 +72,25 @@ class Installer extends LibraryInstaller
         $this->initializeVendorDir();
 
         return ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
+    }
+
+    /**
+     * Record a path as to be added to .gitignore — will be batch added by processGitIgnore
+     * @param string $path Path relative to install dir
+     */
+    public function addToGitIgnore($path)
+    {
+        $this->pathsToIgnore[] = $path;
+    }
+
+    protected function processGitIgnore()
+    {
+        $gitIgnore = new GitIgore($this->getInstallPath() . '/.gitignore');
+        $count = $gitIgnore->addFiles($this->pathsToIgnore);
+        if ($count) {
+            $this->io->write(sprintf('    %d %s added to .gitignore', $count, $count == 1 ? 'path' : 'paths'));
+        }
+        return $count;
     }
 
 }
