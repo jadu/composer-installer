@@ -11,7 +11,7 @@ use Composer\Util\ProcessExecutor;
 
 class EventDispatcher extends ComposerEventDispatcher {
 
-    public function __construct(PackageInterface $package, Composer $composer, IOInterface $io, ProcessExecutor $process = null)
+    public function __construct(PackageInterface $package, Installer $installer, Composer $composer, IOInterface $io, ProcessExecutor $process = null)
     {
         $this->package = $package;
         parent::__construct($composer, $io, $process);
@@ -37,7 +37,17 @@ class EventDispatcher extends ComposerEventDispatcher {
 
         parent::getScriptListeners($event);
 
-        return $scripts[$event->getName()];
+        $eventScripts = $scripts[$event->getName()];
+        $packageBasePath = $this->installer->getPackageBasePath($this->package);
+
+        foreach ($eventScripts as &$script) {
+            // for any shell scripts, first cd into package dir
+            if (is_string($callable) && !$this->isPhpScript($callable)) {
+                $script = 'cd ' . escapeshellarg($packageBasePath) . ' && ' . $script;
+            }
+        }
+
+        return $eventScripts;
     }
 
 }
