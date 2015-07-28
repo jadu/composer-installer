@@ -20,6 +20,7 @@ class Installer extends LibraryInstaller
     const CONSOLE_LINE_LENGTH = 90;
 
     protected $pathsToIgnore = array();
+    protected $config = array();
 
     /**
      * {@inheritDoc}
@@ -35,14 +36,7 @@ class Installer extends LibraryInstaller
 
     protected function doStuff($repo, $package)
     {
-        $extra = $package->getExtra();
-        // $rootExtra = $this->composer->getPackage()->getExtra();
-
-        if (!isset($extra[self::EXTRA_KEY])) {
-            return;
-        }
-
-        $config = $extra[self::EXTRA_KEY];
+        $config = $this->getConfig();
 
         if (isset($config['scripts'])) {
             // run any 'install' scripts
@@ -115,6 +109,26 @@ class Installer extends LibraryInstaller
     }
 
     /**************************************************************************/
+
+    public function getConfig($key = null, $fallback = null)
+    {
+        if (!$this->config) {
+            $extra = $package->getExtra();
+            if (!isset($extra[self::EXTRA_KEY])) {
+                $this->config = array();
+            }
+            $this->config = $extra[self::EXTRA_KEY];
+        }
+        if (key === null) {
+            return $this->config;
+        }
+        elseif (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+        else {
+            return $fallback;
+        }
+    }
 
     /**
      * Record a path as to be added to .gitignore — will be batch added by processGitIgnore
