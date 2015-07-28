@@ -36,7 +36,7 @@ class Installer extends LibraryInstaller
 
     protected function doStuff($repo, $package)
     {
-        $config = $this->getConfig();
+        $config = $this->getConfig($package);
 
         if (isset($config['scripts'])) {
             // run any 'install' scripts
@@ -109,7 +109,7 @@ class Installer extends LibraryInstaller
 
     /**************************************************************************/
 
-    public function getConfig($key = null, $fallback = null)
+    public function getConfig(PackageInterface $package, $key = null, $fallback = null)
     {
         if (!$this->config) {
             $extra = $package->getExtra();
