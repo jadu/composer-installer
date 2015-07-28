@@ -53,7 +53,7 @@ class Installer extends LibraryInstaller
             $eventDispatcher->dispatchScript('install', true);
         }
 
-        $migrationScripts = new MigrationScripts($package, $this->io);
+        $migrationScripts = new MigrationScripts($package, $this->io, $this);
         $migrationScripts->copy();
 
         die('dying so we don\'t complete the install');

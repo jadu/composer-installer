@@ -7,10 +7,11 @@ use Composer\IO\IOInterface;
 
 class MigrationScripts {
 
-    public function __construct(PackageInterface $package, IOInterface $io)
+    public function __construct(PackageInterface $package, IOInterface $io, Installer $installer)
     {
         $this->package = $package;
         $this->io = $io;
+        $this->installer = $installer;
     }
 
     /**
@@ -21,12 +22,12 @@ class MigrationScripts {
      */
     public function copy()
     {
-        $packageMigrationsFolder = $this->getPackageBasePath($this->package) . '/' . Installer::MIGRATIONS_FOLDER;
+        $packageMigrationsFolder = $this->installer->getPackageBasePath($this->package) . '/' . Installer::MIGRATIONS_FOLDER;
         if (!is_dir($packageMigrationsFolder)) {
             return 0;
         }
 
-        $rootMigrationsFolder = $this->getInstallPath($this->package) . '/' . Installer::MIGRATIONS_FOLDER;
+        $rootMigrationsFolder = $this->installer->getInstallPath($this->package) . '/' . Installer::MIGRATIONS_FOLDER;
         if (!is_dir($rootMigrationsFolder)) {
             $this->io->writeError("    Error: Migrations folder doesn't exist in $rootMigrationsFolder");
             return false;
