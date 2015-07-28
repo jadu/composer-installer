@@ -42,7 +42,7 @@ class FileMover {
      * @param  bool $overwrite   Overwrite exist files/folder if true. Default true.
      * @param  bool $gitIgnore   If true, file/folder copied will be added to .gitignore if not already there
      */
-    public function copyFile($relativeSource, $relativeDest, $overwrite, $gitIgnore)
+    public function copyFile($relativeSource, $relativeDest, $overwrite = true, $gitIgnore = true)
     {
         $source = $this->installer->getPackageBasePath($this->package) . '/' . $relativeSource;
         $dest = $this->installer->getRootPath() . '/' . $relativeDest;
