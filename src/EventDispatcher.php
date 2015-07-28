@@ -20,6 +20,30 @@ class EventDispatcher extends ComposerEventDispatcher {
         parent::__construct($composer, $io, $process);
     }
 
+    protected function doDispatch(Event $event)
+    {
+        $listeners = $this->getListeners($event);
+
+        $this->io->write('    Running scripts for ' . $this->package->getPrettyName() . \PHP_EOL);
+
+        ob_start(array($this, 'ob_process'), 2);
+        ob_implicit_flush(true);
+        $return = parent::doDispatch($event);
+        ob_end_flush();
+
+        return $return;
+    }
+
+    /**
+     * Indent output
+     * @param  string $output
+     * @return string
+     */
+    public function ob_process($output)
+    {
+        return preg_replace('/(^|\\n)/', '$1    ', $output);
+    }
+
     /**
      * Finds all listeners defined as scripts in this package
      *
