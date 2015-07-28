@@ -42,15 +42,15 @@ class Installer extends LibraryInstaller
 
         $config = $extra[self::EXTRA_KEY];
 
-        if (isset($config['copy'])) {
-            $fileMover = new FileMover($package, $this->io, $this->composer, $this);
-            $fileMover->copyFiles($config['copy']);
-        }
-
         if (isset($config['scripts'])) {
             // run any 'install' scripts
             $eventDispatcher = new EventDispatcher($package, $this, $this->composer, $this->io);
             $eventDispatcher->dispatchScript('install', true);
+        }
+
+        if (isset($config['copy'])) {
+            $fileMover = new FileMover($package, $this->io, $this->composer, $this);
+            $fileMover->copyFiles($config['copy']);
         }
 
         $migrationScripts = new MigrationScripts($package, $this->io, $this->composer, $this);

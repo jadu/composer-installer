@@ -2,11 +2,11 @@ install as normal into vendor/
 
 Actions
 -------
- - copy/symlink into other places
+ - copy into other places
  - write .gitignore for anything we add
-
  - run scripts to do custom things
  - copy migration scripts into upgrades/migrations
+
  - ensures x permissions -> write to config/permission/custom
  - add to build.xml
 
@@ -37,6 +37,10 @@ Scripts
 -------
 Supports 'install' and 'uninstall' events.
 They work the same as standard Composer events. See https://getcomposer.org/doc/articles/scripts.md
+
+Scripts will be executed from the package's folder (e.g. in vendor/foo/bar/)
+
+Scripts are run *before* other actions (such as copy) are performed — so you can copy build artifacts.
 
 
 ```json
