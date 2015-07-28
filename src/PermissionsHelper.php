@@ -40,7 +40,7 @@ class PermissionsHelper {
         }
         foreach ($newFilePermissions as $file => $permissions) {
             foreach ($filePermissions as $existingFile => &$existingPermissions) {
-                if ($line == $file) {
+                if ($existingFile == $file) {
                     // if the file is already there, merge the permissions
                     $mergedPerms = array_merge(str_split($existingPermissions),str_split($permissions));
                     $mergedPerms = sort(array_unique($mergedPerms));
