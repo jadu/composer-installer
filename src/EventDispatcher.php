@@ -28,7 +28,10 @@ class EventDispatcher extends ComposerEventDispatcher {
 
         ob_start(array($this, 'ob_process'), 2);
         ob_implicit_flush(true);
-        $return = parent::doDispatch($event);
+        $return = parent::doDispatch($event, false, array(
+            'installer' => $this->installer,
+            'package' => $this->package,
+        ));
         ob_end_flush();
 
         return $return;
