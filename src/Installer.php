@@ -53,7 +53,7 @@ class Installer extends LibraryInstaller
             $eventDispatcher->dispatchScript('install', true);
         }
 
-        $migrationScripts = new MigrationScripts($package, $this->io, $this);
+        $migrationScripts = new MigrationScripts($package, $this->io, $this->composer, $this);
         $migrationScripts->copy();
 
         $this->processGitIgnore();
@@ -116,7 +116,7 @@ class Installer extends LibraryInstaller
 
     protected function processGitIgnore()
     {
-        $gitIgnore = new GitIgore($this->getInstallPath() . '/.gitignore');
+        $gitIgnore = new GitIgnore($this->getInstallPath($this->composer->getPackage()) . '/.gitignore');
         $count = $gitIgnore->addFiles($this->pathsToIgnore);
         if ($count) {
             $this->io->write(sprintf('    %d %s added to .gitignore', $count, $count == 1 ? 'path' : 'paths'));

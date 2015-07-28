@@ -4,13 +4,20 @@ namespace Jadu\Composer;
 
 use Composer\Package\PackageInterface;
 use Composer\IO\IOInterface;
+use Composer\Composer;
 
 class MigrationScripts {
 
-    public function __construct(PackageInterface $package, IOInterface $io, Installer $installer)
+    protected $package;
+    protected $io;
+    protected $composer;
+    protected $installer;
+
+    public function __construct(PackageInterface $package, IOInterface $io, Composer $composer, Installer $installer)
     {
         $this->package = $package;
         $this->io = $io;
+        $this->composer = $composer;
         $this->installer = $installer;
     }
 
@@ -27,7 +34,7 @@ class MigrationScripts {
             return 0;
         }
 
-        $rootMigrationsFolder = $this->installer->getInstallPath($this->package) . '/' . Installer::MIGRATIONS_FOLDER;
+        $rootMigrationsFolder = $this->installer->getInstallPath($this->composer->getPackage()) . '/' . Installer::MIGRATIONS_FOLDER;
         if (!is_dir($rootMigrationsFolder)) {
             $this->io->writeError("    Error: Migrations folder doesn't exist in $rootMigrationsFolder");
             return false;
