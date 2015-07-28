@@ -118,7 +118,7 @@ class Installer extends LibraryInstaller
             }
             $this->config = $extra[self::EXTRA_KEY];
         }
-        if (key === null) {
+        if ($key === null) {
             return $this->config;
         }
         elseif (isset($this->config[$key])) {
