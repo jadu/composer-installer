@@ -44,23 +44,6 @@ class EventDispatcher extends ComposerEventDispatcher {
         $output = array();
         $lines = explode("\n", $input);
         foreach ($lines as $line) {
-            if (strlen($line) > Installer::CONSOLE_LINE_LENGTH) {
-                $words = preg_split("/\s/", $line);
-                $line = '';
-                while ($words) {
-                    if (strlen($line) + strlen($words[0]) + 1 <= Installer::CONSOLE_LINE_LENGTH) {
-                        $word = array_shift($words);
-                        if ($line != '') {
-                            $line .= ' ';
-                        }
-                        $line .= $word;
-                    }
-                    else {
-                        $output[] = '    ' . $line;
-                        $line = '';
-                    }
-                }
-            }
             $output[] = '    ' . $line;
         }
         return implode("\n", $output);
