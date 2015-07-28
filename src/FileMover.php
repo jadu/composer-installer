@@ -4,11 +4,13 @@ namespace Jadu\Composer;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
+use Composer\Package\PackageInterface;
 
 class FileMover {
 
-    public function __construct(IOInterface $io, Composer $composer, Installer $installer)
+    public function __construct(PackageInterface $package, IOInterface $io, Composer $composer, Installer $installer)
     {
+        $this->package = $package;
         $this->io = $io;
         $this->composer = $composer;
         $this->installer = $installer;
@@ -42,8 +44,8 @@ class FileMover {
      */
     public function copyFile($relativeSource, $relativeDest, $overwrite, $gitIgnore)
     {
-        $source = $this->installer->getPackageBasePath() . '/' . $relativeSource;
-        $dest = $this->installer->getInstallPath() . '/' . $relativeDest;
+        $source = $this->installer->getPackageBasePath($this->package) . '/' . $relativeSource;
+        $dest = $this->installer->getInstallPath($this->package) . '/' . $relativeDest;
 
         if (!file_exists($source)) {
             throw new \RuntimeException("File to copy doesn't exist: $source");
