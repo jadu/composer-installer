@@ -150,7 +150,7 @@ class Installer extends LibraryInstaller
 
     protected function configurePermissions($permissions)
     {
-        $permissionsHelper = new PermissionsHelper($this->getRootPath() . '/.gitignore');
+        $permissionsHelper = new PermissionsHelper($this->getRootPath() . '/config/permissions/custom');
         $count = $permissionsHelper->addFiles($permissions);
         if ($count) {
             $this->io->write(sprintf('    %d permissions %s added', $count, $count == 1 ? 'rule' : 'rules'));
