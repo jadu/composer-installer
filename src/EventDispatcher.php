@@ -11,9 +11,12 @@ use Composer\Util\ProcessExecutor;
 
 class EventDispatcher extends ComposerEventDispatcher {
 
+    protected $installer;
+
     public function __construct(PackageInterface $package, Installer $installer, Composer $composer, IOInterface $io, ProcessExecutor $process = null)
     {
         $this->package = $package;
+        $this->installer = $installer;
         parent::__construct($composer, $io, $process);
     }
 
