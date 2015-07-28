@@ -56,6 +56,10 @@ class Installer extends LibraryInstaller
         $migrationScripts = new MigrationScripts($package, $this->io, $this->composer, $this);
         $migrationScripts->copy();
 
+        if (isset($config['permissions'])) {
+            $this->configurePermissions($config['permissions']);
+        }
+
         $this->processGitIgnore();
 
         die('dying so we don\'t complete the install');
@@ -125,6 +129,16 @@ class Installer extends LibraryInstaller
         $count = $gitIgnore->addFiles($this->pathsToIgnore);
         if ($count) {
             $this->io->write(sprintf('    %d %s added to .gitignore', $count, $count == 1 ? 'path' : 'paths'));
+        }
+        return $count;
+    }
+
+    protected function configurePermissions($permissions)
+    {
+        $permissionsHelper = new PermissionsHelper($this->getRootPath() . '/.gitignore');
+        $count = $permissionsHelper->addFiles($permissions);
+        if ($count) {
+            $this->io->write(sprintf('    %d permissions %s added', $count, $count == 1 ? 'rule' : 'rules'));
         }
         return $count;
     }

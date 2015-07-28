@@ -42,6 +42,9 @@ Scripts will be executed from the package's folder (e.g. in vendor/foo/bar/)
 
 Scripts are run *before* other actions (such as copy) are performed — so you can copy build artifacts.
 
+Permissions
+-----------
+Permissions rules can be added to config/permissions/custom so Meteor will set these when the package is deployed.
 
 ```json
 "extra": {
@@ -56,6 +59,12 @@ Scripts are run *before* other actions (such as copy) are performed — so you c
             "uninstall": [
 
             ]
+        },
+        "permissions": {
+            "public_html/jadu/custom": "rR",
+            "vendor": "x",
+            "vendor/jadu": "x",
+            "vendor/jadu/widget-factory": "x"
         }
     }
 }
