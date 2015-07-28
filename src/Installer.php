@@ -64,6 +64,7 @@ class Installer extends LibraryInstaller
         parent::uninstall($repo, $package);
     }
 
+    /**************************************************************************/
 
     public function getInstallPath(PackageInterface $package)
     {
@@ -78,6 +79,8 @@ class Installer extends LibraryInstaller
 
         return ($this->vendorDir ? $this->vendorDir.'/' : '') . $package->getPrettyName();
     }
+
+    /**************************************************************************/
 
     /**
      * Record a path as to be added to .gitignore — will be batch added by processGitIgnore
