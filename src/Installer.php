@@ -58,7 +58,6 @@ class Installer extends LibraryInstaller
 
         $this->processGitIgnore();
 
-        die('dying so we don\'t complete the install');
     }
 
     /**
