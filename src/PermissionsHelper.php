@@ -77,6 +77,10 @@ class PermissionsHelper {
             mkdir($permissionsFolder, 0755, true);
         }
 
+        if (empty($lines)) {
+            return;
+        }
+
         $file = fopen($this->permissionsFilePath, 'w');
         foreach ($lines as $filename => $permissions) {
             $line = sprintf(
