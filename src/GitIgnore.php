@@ -60,8 +60,10 @@ class GitIgnore {
         foreach ($lines as $line) {
             fputs($file, $line . \PHP_EOL);
         }
-        // ensure trailing newline
-        fputs($file, \PHP_EOL);
+        if ($line !== \PHP_EOL) {
+            // add trailing newline if the last line wasn't one
+            fputs($file, \PHP_EOL);
+        }
         fclose($file);
     }
 
