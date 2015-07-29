@@ -61,6 +61,8 @@ class Installer extends LibraryInstaller
 
         $this->processGitIgnore();
 
+        $buildXml = new BuildXml();
+
     }
 
     /**
