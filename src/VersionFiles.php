@@ -44,8 +44,7 @@ class VersionFiles {
         foreach ($versionFiles as $filePath) {
             $fileName = basename($filePath);
 
-            // copy without overwriting
-            if ($fileMover->copyFile($fileName, $fileName, false, true)) {
+            if ($fileMover->copyFile($fileName, $fileName, true, true)) {
                 $count++;
             }
         }
