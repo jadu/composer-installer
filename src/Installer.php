@@ -41,9 +41,12 @@ class Installer extends LibraryInstaller
         if (isset($config['scripts'])) {
             // run any 'install' scripts
             $eventDispatcher = new EventDispatcher($package, $this, $this->composer, $this->io);
-            $eventDispatcher->dispatchScript('install', true, array(
-                'installer' => $this,
-                'package' => $package,
+            $this->doDispatch(new ScriptEvent(
+                'install',
+                $this->composer,
+                $this->io,
+                $package,
+                $this
             ));
         }
 
