@@ -63,7 +63,9 @@ class PermissionsHelper {
         if (file_exists($this->permissionsFilePath)) {
             foreach (file($this->permissionsFilePath, \FILE_IGNORE_NEW_LINES) as $line) {
                 list(,$file,$permissions) = preg_match('/^(.+?)\s+\[([rwxR]+)\]\\s*$/', $line, $m);
-                $lines[$file] = $permissions;
+                if (!empty($file)) {
+                    $lines[$file] = $permissions;
+                }
             }
         }
         return $lines;
