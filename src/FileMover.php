@@ -2,17 +2,15 @@
 
 namespace Jadu\Composer;
 
-use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 
 class FileMover {
 
-    public function __construct(PackageInterface $package, IOInterface $io, Composer $composer, Installer $installer)
+    public function __construct(PackageInterface $package, IOInterface $io, Installer $installer)
     {
         $this->package = $package;
         $this->io = $io;
-        $this->composer = $composer;
         $this->installer = $installer;
     }
 
