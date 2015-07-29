@@ -38,7 +38,6 @@ class VersionFiles {
             return 0;
         }
 
-        $rootPath = $this->installer->getRootPath();
         $fileMover = new FileMover($this->package, $this->io, $this->installer);
         $count = 0;
 
@@ -46,7 +45,7 @@ class VersionFiles {
             $fileName = basename($filePath);
 
             // copy without overwriting
-            if ($fileMover->copyFile($fileName, $rootPath . '/' . $fileName, false, true)) {
+            if ($fileMover->copyFile($fileName, $fileName, false, true)) {
                 $count++;
             }
         }
