@@ -57,13 +57,17 @@ class GitIgnore {
     protected function write($lines)
     {
         $file = fopen($this->ignoreFilePath, 'w');
+
+        // remove empty trailing lines
+        while (!empty($lines) && !trim(end($lines))) {
+            array_pop($lines);
+        }
+
         foreach ($lines as $line) {
             fputs($file, $line . \PHP_EOL);
         }
-        if ($line !== \PHP_EOL) {
-            // add trailing newline if the last line wasn't one
-            fputs($file, \PHP_EOL);
-        }
+        // add trailing newline if the last line wasn't one
+        fputs($file, \PHP_EOL);
         fclose($file);
     }
 
