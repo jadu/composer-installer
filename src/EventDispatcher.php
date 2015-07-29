@@ -70,7 +70,16 @@ class EventDispatcher extends ComposerEventDispatcher {
             return array();
         }
 
-        parent::getScriptListeners($event);
+        if ($this->loader) {
+            $this->loader->unregister();
+        }
+
+        $generator = $this->composer->getAutoloadGenerator();
+        $packages = $this->composer->getRepositoryManager()->getLocalRepository()->getCanonicalPackages();
+        $packageMap = $generator->buildPackageMap($this->composer->getInstallationManager(), $this->package, $packages);
+        $map = $generator->parseAutoloads($packageMap, $this->package);
+        $this->loader = $generator->createLoader($map);
+        $this->loader->register();
 
         $eventScripts = $scripts[$event->getName()];
         $packageBasePath = $this->installer->getPackageBasePath($this->package);
