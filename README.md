@@ -9,6 +9,7 @@ Actions
  - ensures x permissions -> write to config/permission/custom
 
  - add to build.xml
+ - automatically copy *_VERSION files to the root
 
 Examples
 --------
