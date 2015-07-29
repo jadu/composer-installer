@@ -20,6 +20,24 @@ class EventDispatcher extends ComposerEventDispatcher {
         parent::__construct($composer, $io, $process);
     }
 
+    /**
+     * Dispatch a script event.
+     *
+     * Overrides Composer's EventDispatcher::dispatchScript to use an overriden ScriptEvent which contains
+     * the package and installer instances.
+     *
+     * @param  string $eventName      The constant in ScriptEvents
+     * @param  bool   $devMode
+     * @param  array  $additionalArgs Arguments passed by the user
+     * @param  array  $flags          Optional flags to pass data not as argument
+     * @return int    return code of the executed script if any, for php scripts a false return
+     *                               value is changed to 1, anything else to 0
+     */
+    public function dispatchScript($eventName, $devMode = false, $additionalArgs = array(), $flags = array())
+    {
+        return $this->doDispatch(new ScriptEvent($eventName, $this->composer, $this->io, $this->package, $this->installer, $devMode, $additionalArgs, $flags));
+    }
+
     protected function doDispatch(Event $event)
     {
         $listeners = $this->getListeners($event);
