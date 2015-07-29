@@ -16,13 +16,23 @@ class FileMover {
 
     /**
      * Copy a set of files and/or folders
-     * @param  array[string]string $files Array where the key is the source path and the value is the destination path
+     * @param  array[string]string $files Array where the key is the source path
+     *                                    and the value is either the destination path (string)
+     *                                    or an array with keys 'destination', 'ignore' and 'overwrite'
      * @return integer        Number of files/folders copied
      */
     public function copyFiles($files)
     {
         $copyCount = 0;
         foreach ($files as $source => $dest) {
+            $ignore = true;
+            $overwrite = true;
+            if (is_array($dest)) {
+                $dest = $dest['destination'];
+                $ignore = isset($dest['ignore']) ? $dest['ignore'] : $ignore;
+                $overwrite = isset($dest['overwrite']) ? $dest['overwrite'] : $overwrite;
+            }
+
             if ($this->copyFile($source, $dest, true, true)) {
                 $copyCount++;
             }
