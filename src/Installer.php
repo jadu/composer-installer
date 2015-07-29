@@ -61,7 +61,7 @@ class Installer extends LibraryInstaller
 
         $this->processGitIgnore();
 
-        $buildXml = new BuildXml();
+        $buildXml = new BuildXml($this->getRootPath() . '/build.xml');
 
     }
 
