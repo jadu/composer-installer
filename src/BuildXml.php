@@ -4,6 +4,9 @@ namespace Jadu\Composer;
 
 class BuildXml {
 
+    // this path is correct as of Meteor 1.0.4 — it may need updating if Meteor is changed
+    const DEFAULT_FILESET_PATH = 'vendor/jadu/meteor/res/build/ant/filesets.xml';
+
     protected $buildXmlPath;
     protected $xml;
 
@@ -55,9 +58,21 @@ class BuildXml {
             $this->parseFileset($this->xml->fileset);
         }
         else {
-            // load & parse default fileset from Meteor
-            // attach node to $this->xml
+            $this->readDefaultFileSet();
         }
+    }
+
+    protected function readDefaultFileSet()
+    {
+        $defaultFilesetXmlFile = dirname($this->buildXmlPath) . '/' . self::DEFAULT_FILESET_PATH;
+        if (file_exists($defaultFilesetXmlFile)) {
+            $defaultFilesetXml = simplexml_load_file($defaultFilesetXmlFile);
+            if (isset($defaultFilesetXml->fileset)) {
+                $this->parseFileset($defaultFilesetXml->fileset);
+                return true;
+            }
+        }
+        return false;
     }
 
     protected function parseFileset($filesetNode)
