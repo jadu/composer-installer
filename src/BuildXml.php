@@ -67,7 +67,7 @@ class BuildXml {
         $this->includes = array();
         $this->excludes = array();
 
-        if (isset($this->xml->fileset)) {
+        if (isset($this->xml->fileset) && $this->xml->fileset->children()) {
             $this->parseFileset($this->xml->fileset);
         }
         else {
@@ -90,12 +90,12 @@ class BuildXml {
 
     protected function parseFileset($filesetNode)
     {
-        if (isset($filesetNode->include)) {
+        if (isset($filesetNode->include) && $filesetNode->include->children()) {
             foreach ($filesetNode->include as $includeNode) {
                 $this->includes[] = (string)$includeNode['name'];
             }
         }
-        if (isset($filesetNode->exclude)) {
+        if (isset($filesetNode->exclude) && $filesetNode->exclude->children()) {
             foreach ($filesetNode->exclude as $excludeNode) {
                 $this->excludes[] = (string)$excludeNode['name'];
             }
@@ -106,18 +106,23 @@ class BuildXml {
     {
         if (!$this->modified) return;
 
-        $filesetNode = new SimpleXmlElement('<fileset id="fileset.files" dir="${basedir}"></fileset>');
+        unset($this->xml->fileset->include);
+        unset($this->xml->fileset->exclude);
+
+        $this->xml->fileset['id'] = 'fileset.files';
+        $this->xml->fileset['dir'] = '${basedir}';
+
+        sort($this->includes);
+        sort($this->excludes);
+
         foreach ($this->includes as $includePath) {
-            $includeNode = new SimpleXmlElement('<include />');
-            $includeNode->addAttribute('name', $includePath);
-            $filesetNode[] = $includeNode;
+            $includeNode = $this->xml->fileset->addChild('include');
+            $includeNode['name'] = $includePath;
         }
         foreach ($this->excludes as $excludePath) {
-            $excludeNode = new SimpleXmlElement('<exclude />');
-            $excludeNode->addAttribute('name', $excludePath);
-            $filesetNode[] = $excludeNode;
+            $excludeNode = $this->xml->fileset->addChild('exclude');
+            $excludeNode['name'] = $excludePath;
         }
-        $this->xml['fileset'] = $filesetNode;
 
         foreach ($this->xml->property as $property) {
             if ($property['name'] == 'package-fileset') {
@@ -133,7 +138,13 @@ class BuildXml {
             }
         }
 
-        return file_put_contents($this->buildXmlPath, $this->xml->asXML());
+        // use DOM to format XML
+        $dom = new \DOMDocument('1.0');
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($this->xml->asXML());
+
+        return file_put_contents($this->buildXmlPath, $dom->saveXML());
     }
 
 }
