@@ -91,7 +91,7 @@ class FileMover {
                 throw new RuntimeException("Failed to copy file to $dest");
             }
             if ($addToBuildXml) {
-                $this->installer->addBuildXmlInclude($dest);
+                $this->installer->addBuildXmlInclude($relativeDest);
             }
         }
 
