@@ -100,7 +100,7 @@ class BuildXml {
         }
     }
 
-    protected function write()
+    public function write()
     {
         if (!$this->modified) return;
 
