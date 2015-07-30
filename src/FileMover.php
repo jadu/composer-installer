@@ -82,7 +82,7 @@ class FileMover {
             }
 
             if ($addToBuildXml) {
-                $this->installer->addBuildXmlInclude(rtrim($dest,'/') . '/**');
+                $this->installer->addBuildXmlInclude(rtrim($relativeDest,'/') . '/**');
             }
         }
         else {
