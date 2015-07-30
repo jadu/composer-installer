@@ -110,12 +110,12 @@ class BuildXml {
         foreach ($this->includes as $includePath) {
             $includeNode = new SimpleXmlElement('<include />');
             $includeNode->addAttribute('name', $includePath);
-            $filesetNode->addChild($includeNode);
+            $filesetNode[] = $includeNode;
         }
         foreach ($this->excludes as $excludePath) {
             $excludeNode = new SimpleXmlElement('<exclude />');
             $excludeNode->addAttribute('name', $excludePath);
-            $filesetNode->addChild($excludeNode);
+            $filesetNode[] = $excludeNode;
         }
         $this->xml['fileset'] = $filesetNode;
 
