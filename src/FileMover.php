@@ -31,9 +31,10 @@ class FileMover {
                 $dest = $dest['destination'];
                 $ignore = isset($dest['ignore']) ? $dest['ignore'] : $ignore;
                 $overwrite = isset($dest['overwrite']) ? $dest['overwrite'] : $overwrite;
+                $include = isset($dest['include']) ? $dest['include'] : $include;
             }
 
-            if ($this->copyFile($source, $dest, true, true)) {
+            if ($this->copyFile($source, $dest, $overwrite, $ignore, $include)) {
                 $copyCount++;
             }
         }
