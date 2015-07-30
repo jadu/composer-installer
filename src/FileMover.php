@@ -27,11 +27,13 @@ class FileMover {
         foreach ($files as $source => $dest) {
             $ignore = true;
             $overwrite = true;
+            $include = true;
+
             if (is_array($dest)) {
-                $dest = $dest['destination'];
                 $ignore = isset($dest['ignore']) ? $dest['ignore'] : $ignore;
                 $overwrite = isset($dest['overwrite']) ? $dest['overwrite'] : $overwrite;
                 $include = isset($dest['include']) ? $dest['include'] : $include;
+                $dest = $dest['destination'];
             }
 
             if ($this->copyFile($source, $dest, $overwrite, $ignore, $include)) {
