@@ -117,6 +117,20 @@ class BuildXml {
         }
         $this->xml['fileset'] = $filesetNode;
 
+        foreach ($this->xml->property as $property) {
+            if ($property['name'] == 'package-fileset') {
+                $property['value'] = 'fileset.files';
+            }
+        }
+
+        foreach ($this->xml->target as $target) {
+            foreach ($target->property as $property) {
+                if ($property['name'] == 'package-fileset') {
+                    $property['value'] = 'fileset.files';
+                }
+            }
+        }
+
         return file_put_contents($this->buildXmlPath, $this->xml->asXML());
     }
 
