@@ -49,8 +49,9 @@ class FileMover {
      * @param  string $dest      File path relative to root install folder
      * @param  bool $overwrite   Overwrite exist files/folder if true. Default true.
      * @param  bool $gitIgnore   If true, file/folder copied will be added to .gitignore if not already there
+     * @param  bool $$addToBuildXml If true, file/folder will be added into the build.xml
      */
-    public function copyFile($relativeSource, $relativeDest, $overwrite = true, $gitIgnore = true)
+    public function copyFile($relativeSource, $relativeDest, $overwrite = true, $gitIgnore = true, $addToBuildXml = true)
     {
         $source = $this->installer->getPackageBasePath($this->package) . '/' . $relativeSource;
         $dest = $this->installer->getRootPath() . '/' . $relativeDest;
@@ -76,11 +77,18 @@ class FileMover {
             if (!$success) {
                 throw new RuntimeException("Failed to copy folder to $dest");
             }
+
+            if ($addToBuildXml) {
+                $this->installer->addBuildXmlInclude(rtrim($dest,'/') . '/**');
+            }
         }
         else {
             $success = copy($source, $dest);
             if (!$success) {
                 throw new RuntimeException("Failed to copy file to $dest");
+            }
+            if ($addToBuildXml) {
+                $this->installer->addBuildXmlInclude($dest);
             }
         }
 
