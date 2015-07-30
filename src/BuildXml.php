@@ -10,6 +10,11 @@ class BuildXml {
     protected $buildXmlPath;
     protected $xml;
 
+    protected $includes;
+    protected $excludes;
+
+    protected $modified = false;
+
     /**
      * @param string $buildXmlPath /path/to/build.xml
      */
@@ -28,7 +33,10 @@ class BuildXml {
     public function addInclude($file)
     {
         if (!$this->xml) return;
-        $this->includes[] = $file;
+        if (!in_array($file, $this->includes)) {
+            $this->includes[] = $file;
+            $this->modified = true;
+        }
     }
 
     /**
@@ -40,7 +48,10 @@ class BuildXml {
     public function addExclude($file)
     {
         if (!$this->xml) return;
-        $this->excludes[] = $file;
+        if (!in_array($file, $this->excludes)) {
+            $this->excludes[] = $file;
+            $this->modified = true;
+        }
     }
 
     protected function read()
@@ -91,6 +102,8 @@ class BuildXml {
 
     protected function write()
     {
+        if (!$this->modified) return;
+
         $filesetNode = new SimpleXmlElement('<fileset id="fileset.files" dir="${basedir}"></fileset>');
         foreach ($this->includes as $includePath) {
             $includeNode = new SimpleXmlElement('<include />');

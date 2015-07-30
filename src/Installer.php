@@ -38,6 +38,8 @@ class Installer extends LibraryInstaller
     {
         $config = $this->getConfig($package);
 
+        $this->buildXml = new BuildXml($this->getRootPath() . '/build.xml');
+
         if (isset($config['scripts'])) {
             // run any 'install' scripts
             $eventDispatcher = new EventDispatcher($package, $this, $this->composer, $this->io);
@@ -61,7 +63,7 @@ class Installer extends LibraryInstaller
 
         $this->processGitIgnore();
 
-        $buildXml = new BuildXml($this->getRootPath() . '/build.xml');
+        $this->buildXml->write();
 
     }
 
@@ -132,6 +134,16 @@ class Installer extends LibraryInstaller
         else {
             return $fallback;
         }
+    }
+
+    public function addBuildXmlInclude($path)
+    {
+        $this->buildXml->addInclude($path);
+    }
+
+    public function addBuildXmlExclude($path)
+    {
+        $this->buildXml->addExclude($path);
     }
 
     /**
