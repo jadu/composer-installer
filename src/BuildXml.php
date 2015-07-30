@@ -2,6 +2,8 @@
 
 namespace Jadu\Composer;
 
+use SimpleXmlElement;
+
 class BuildXml {
 
     // this path is correct as of Meteor 1.0.4 — it may need updating if Meteor is changed
