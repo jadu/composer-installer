@@ -31,6 +31,8 @@ Copy
 ----
 List files/folder to copy.
 
+By default, files and folders copied are added to .gitignore and included in the Meteor package (via build.xml)
+
 The array key is the source file (relative to the package root path),
 the array value is either
 (a) the destination (string, relative to the root install dir), or
@@ -38,6 +40,7 @@ the array value is either
     string destination Destination to copy file to, relative to the root install dir
     bool overwrite    Optional (defaults to true). Whether to overwrite existing file
     bool ignore    Optional (defaults to true). If true, the copied file will be added to .gitignore
+    bool include    Optional (defaults to true). If true, the copied file will be included in the Meteor package (i.e. added to the build.xml fileset)
 
 Scripts
 -------
@@ -74,7 +77,13 @@ Permissions rules can be added to config/permissions/custom so Meteor will set t
             "vendor": "x",
             "vendor/jadu": "x",
             "vendor/jadu/widget-factory": "x"
-        }
+        },
+        "package-include": [
+            'vendor/jadu/widget-factory/**'
+        ],
+        "package-exclude": [
+            'vendor/jadu/widget-factory/tests/**'
+        ]
     }
 }
 ```

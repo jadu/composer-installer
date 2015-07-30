@@ -63,7 +63,7 @@ class Installer extends LibraryInstaller
 
         $this->processGitIgnore();
 
-        $this->buildXml->write();
+        $this->processBuildXml($config);
 
     }
 
@@ -144,6 +144,22 @@ class Installer extends LibraryInstaller
     public function addBuildXmlExclude($path)
     {
         $this->buildXml->addExclude($path);
+    }
+
+    protected function processBuildXml($config)
+    {
+        // add any includes/excludes specified in the composer.json
+        if (isset($config['package-include'])) {
+            foreach ($config['package-include'] as $include) {
+                $this->addBuildXmlInclude($include);
+            }
+        }
+        if (isset($config['package-exclude'])) {
+            foreach ($config['package-exclude'] as $exclude) {
+                $this->addBuildXmlExclude($exclude);
+            }
+        }
+        $this->buildXml->write();
     }
 
     /**
