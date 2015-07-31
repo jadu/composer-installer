@@ -8,22 +8,23 @@ It allows the package to automatically install themselves into a Jadu implementa
 The installation happens when `composer update` is run on a local Mac or on the build server,
 and prepares the Project repo so that the Package is included as needed in the Project's release package.
 
+
 The package has control to achieve everything needed to install itself, including:
 
- - copy files from the Package into the Project — with control over overwriting behaviour
- - run scripts from within the Package to do custom things
- - specify permissions required, by adding to the config/permission/custom file which Meteor reads from
- - add include/exclude rules to the Project's build.xml, controlling what gets included in the release package
+ - *copy files* from the Package into the Project — with control over overwriting behaviour
+ - *run scripts* from within the Package to do custom things
+ - specify *permissions* required on the server, by adding to the config/permission/custom file which Meteor reads from
+ - add include/exclude rules to the Project's *build.xml*, controlling what gets included in the release package
 
-Some actions are also performed automatically:
+### Some actions are also performed automatically:
 
- - any database migration scripts in the Package are copied into the Project's upgrades/migrations folder, with an updated timestamp. Example use case: if the package requires its own database tables, these can be handled via a migration script.
+ - any *database migration scripts* in the Package are copied into the Project's upgrades/migrations folder, with an updated timestamp. Example use case: if the package requires its own database tables, these can be handled via a migration script.
 
- - files copied into the Project are added to the `.gitignore` file so they don't get committed with the Project. This can be disabled per file — e.g. for “starting point” templates which will need to be customised for the Project, which will then want to be committed.
+ - files copied into the Project are added to the *.gitignore* file so they don't get committed with the Project. This can be disabled per file — e.g. for “starting point” templates which will need to be customised for the Project, which will then want to be committed.
 
- - files copied into the Project are automatically added to build.xml so they get included in the Meteor release package. This can be disabled per file.
+ - files copied into the Project are automatically added to *build.xml* so they get included in the Meteor release package. This can be disabled per file.
 
- - any *_VERSION files in the root of the package are copied into the Project's root, so these will appear on the Control Centre's version.php page, so the package versions installed can be easily seen.
+ - any **_VERSION files* in the root of the package are copied into the Project's root, so these will appear on the Control Centre's version.php page, so the package versions installed can be easily seen.
 
 
 All file changes made by the installer are visible to the developer via Git, and it is the responsibilty of the developer to commit those changes once they are happy with them.
@@ -39,13 +40,13 @@ Widget Factory is a package that allow rapid building of robust widgets simply t
 With this custom Composer installer, Widget Factory can be added to a project with two simple steps:
 
 1. Add a small section to the Project's `composer.json` file to declare widgets using Widget Factory:
-```
-    "extra": {
-        "jadu-widget-factory": {
-            "widgets": "999 997"
+    ```json
+        "extra": {
+            "jadu-widget-factory": {
+                "widgets": "999 997"
+            }
         }
-    }
-```
+    ```
 2. Run `composer require jadu/widget-factory`
 
 The Widget Factory package will automatically do the following:
@@ -57,32 +58,32 @@ The Widget Factory package will automatically do the following:
 
 ### These are the steps required to configure Widget Factory to install itself:
 
-1. Modify composer.json to add the following:
+1. Modify `composer.json` to add the following:
 
-```json
-    "type": "jadu-module",
-    "require": {
-        "jadu/composer-installer": "~1"
-    },
-    "extra": {
-        "jadu-install": {
-            "copy": {
-                "resources/public": "public_html/jadu/widget-factory"
-            },
-            "scripts": {
-                "install": [
-                    "Jadu\\Widget\\Installer::installForWidgets"
+    ```json
+        "type": "jadu-module",
+        "require": {
+            "jadu/composer-installer": "~1"
+        },
+        "extra": {
+            "jadu-install": {
+                "copy": {
+                    "resources/public": "public_html/jadu/widget-factory"
+                },
+                "scripts": {
+                    "install": [
+                        "Jadu\\Widget\\Installer::installForWidgets"
+                    ]
+                },
+                "package-include": [
+                    "vendor/jadu/widget-factory"
                 ]
-            },
-            "package-include": [
-                "vendor/jadu/widget-factory"
-            ]
+            }
         }
-    }
-```
+    ```
 
 2. Add an installation script to copy the secure.js into each widget folder as appropriate, having read
-from the Project's composer.json which widgets are using Widget Factory
+from the Project's `composer.json` which widgets are using Widget Factory
 
 Most packages wouldn't require this step, as most installation tasks can be handled by the standard Jadu `composer-installer` features available. But the ability to run custom scripts allows packages to handle their own installation by whatever logic is required.
 
@@ -93,7 +94,7 @@ Widget Factory doesn't require any database changes, so there are no migration s
 Feature Documentation
 ---------------------
 
-A Package configures what the Composer Installer will do via the Package's composer.json, within a `jadu-install` hash within `extra`.
+A Package configures what the Composer Installer will do via the Package's `composer.json`, within a `jadu-install` hash within `extra`.
 
 ### Example
 
@@ -121,10 +122,10 @@ A Package configures what the Composer Installer will do via the Package's compo
             "vendor/jadu/my-little-package": "x"
         },
         "package-include": [
-            'vendor/jadu/my-little-package/**'
+            "vendor/jadu/my-little-package/**"
         ],
         "package-exclude": [
-            'vendor/jadu/my-little-package/tests/**'
+            "vendor/jadu/my-little-package/tests/**"
         ]
     }
 }
