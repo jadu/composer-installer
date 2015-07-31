@@ -35,7 +35,7 @@ class BuildXml {
     public function addInclude($file)
     {
         if (!$this->xml) return;
-        if (!in_array($file, $this->includes)) {
+        if (!$this->inArray($file, $this->includes)) {
             $this->includes[] = $file;
             $this->modified = true;
         }
@@ -50,10 +50,34 @@ class BuildXml {
     public function addExclude($file)
     {
         if (!$this->xml) return;
-        if (!in_array($file, $this->excludes)) {
+        if (!$this->inArray($file, $this->excludes)) {
             $this->excludes[] = $file;
             $this->modified = true;
         }
+    }
+
+    /**
+     * Determines if the $file is within the $array,
+     * either exactly or as part of a folder wildcard entry
+     * @param  array[]string $array
+     * @param  string $file
+     * @return bool
+     */
+    public function inArray($file, $array)
+    {
+        if (in_array($file, $array)) {
+            return true;
+        }
+        // if there is an entry "/foo/bar/**" already in the array,
+        // consider the $file /foo/bar/baz to be in the array
+        foreach ($array as $existing) {
+            if (preg_match('%^(.+/)\*\*$%', $existing, $m)) {
+                if (strpos($file, $m[1]) === 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     protected function read()
