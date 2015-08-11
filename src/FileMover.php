@@ -70,10 +70,15 @@ class FileMover {
 
         if (is_dir($source)) {
             // delete existing folder
-            if (is_dir($dest)) {
+            if (is_dir($dest) && !is_link($dest)) {
                 if (!self::unlinkFolder($dest)) {
                     $this->io->writeError("    Existing folder could not be removed: $dest");
                     return false;
+                }
+            }
+            elseif (file_exists($dest)) {
+                if (!unlink($dest)) {
+                    throw new RuntimeException("Failed to remove existing file $dest");
                 }
             }
             $success = self::copyFolder($source, $dest);
