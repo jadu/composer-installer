@@ -113,7 +113,7 @@ class FileMover {
             array('.', '..')
         );
         foreach ($files as $file) {
-            if (is_dir("$path/$file") && !is_link($path)) {
+            if (is_dir("$path/$file") && !is_link("$path/$file")) {
                 self::unlinkFolder("$path/$file");
             }
             else {
