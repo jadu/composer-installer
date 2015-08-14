@@ -147,7 +147,7 @@ class FileMover {
                 }
             }
             else {
-                if (!copy("$source/$file", "$dest/file")) {
+                if (!copy("$source/$file", "$dest/$file")) {
                     return false;
                 }
             }
