@@ -21,6 +21,7 @@ class Installer extends LibraryInstaller
 
     protected $pathsToIgnore = array();
     protected $config = array();
+    protected $buildXml;
 
     /**
      * {@inheritDoc}
