@@ -37,6 +37,8 @@ class Installer extends LibraryInstaller
 
     protected function doStuff($repo, $package)
     {
+        $this->reset();
+
         $config = $this->getConfig($package);
 
         $this->buildXml = new BuildXml($this->getRootPath() . '/build.xml');
@@ -116,6 +118,19 @@ class Installer extends LibraryInstaller
     }
 
     /**************************************************************************/
+
+    /**
+     * Reset ready for a new package
+     *
+     * The same installer instance is used for each packages to be installed, so
+     * we need to reset before each to ensure separation.
+     * @return [type] [description]
+     */
+    protected function reset()
+    {
+        $this->config = array();
+        $this->pathsToIgnore = array();
+    }
 
     public function getConfig(PackageInterface $package, $key = null, $fallback = null)
     {
