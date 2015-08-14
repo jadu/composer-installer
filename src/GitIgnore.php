@@ -47,6 +47,10 @@ class GitIgnore {
     {
         if (file_exists($this->ignoreFilePath)) {
             $lines = file($this->ignoreFilePath, \FILE_IGNORE_NEW_LINES);
+            // lose empty lines at the end
+            while (count($lines) && empty($lines[count($lines)-1])) {
+                array_pop($lines);
+            }
         }
         else {
             $lines = array();
