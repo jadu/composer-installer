@@ -6,7 +6,8 @@ use Composer\Package\PackageInterface;
 use Composer\IO\IOInterface;
 use Composer\Composer;
 
-class MigrationScripts {
+class MigrationScripts
+{
 
     protected $package;
     protected $io;
@@ -19,6 +20,24 @@ class MigrationScripts {
         $this->io = $io;
         $this->composer = $composer;
         $this->installer = $installer;
+    }
+
+    /**
+     * Gets the hash of a file contents, by first normalising the Version class name
+     * to avoid that affecting the hash
+     * @param  string $file Path to Version* file
+     * @return hash       Hash
+     */
+    protected function getHash($file)
+    {
+        $contents = file_get_contents($file);
+        // normalise the class name to avoid mismatches
+        $contents = preg_replace(
+            '/(\bclass\s+Version.+?)(?=$|[ \t]+(extends|\{))/',
+            'class VersionNormalised',
+            $contents
+        );
+        return sha1($contents);
     }
 
     /**
@@ -42,11 +61,11 @@ class MigrationScripts {
 
         $newMigrationFiles = array();
         foreach (glob($packageMigrationsFolder . '/Version*.php') as $file) {
-            $newMigrationFiles[$file] = sha1_file($file);
+            $newMigrationFiles[$file] = $this->getHash($file);
         }
         $existingMigrationFiles = array();
         foreach (glob($rootMigrationsFolder . '/Version*.php') as $file) {
-            $existingMigrationFiles[$file] = sha1_file($file);
+            $existingMigrationFiles[$file] = $this->getHash($file);
         }
 
         $count = 0;
