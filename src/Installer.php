@@ -200,7 +200,7 @@ class Installer extends LibraryInstaller
         $permissionsHelper = new PermissionsHelper($this->getRootPath() . '/config/permissions/custom');
         $count = $permissionsHelper->addFiles($permissions);
         if ($count) {
-            $this->io->write(sprintf('    %d permissions %s added', $count, $count == 1 ? 'rule' : 'rules'));
+            $this->io->write(sprintf('    %d permissions %s added or modified', $count, $count == 1 ? 'rule' : 'rules'));
         }
         return $count;
     }
