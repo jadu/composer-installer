@@ -37,37 +37,45 @@ class Installer extends LibraryInstaller
 
     protected function doStuff($repo, $package)
     {
-        $this->reset();
+        try {
+            $this->reset();
 
-        $config = $this->getConfig($package);
+            $config = $this->getConfig($package);
 
-        $this->buildXml = new BuildXml($this->getRootPath() . '/build.xml');
+            $this->buildXml = new BuildXml($this->getRootPath() . '/build.xml');
 
-        if (isset($config['scripts'])) {
-            // run any 'install' scripts
-            $eventDispatcher = new EventDispatcher($package, $this, $this->composer, $this->io);
-            $eventDispatcher->dispatchScript('install');
+            if (isset($config['scripts'])) {
+                // run any 'install' scripts
+                $eventDispatcher = new EventDispatcher($package, $this, $this->composer, $this->io);
+                $eventDispatcher->dispatchScript('install');
+            }
+
+            if (isset($config['copy'])) {
+                $fileMover = new FileMover($package, $this->io, $this);
+                $fileMover->copyFiles($config['copy']);
+            }
+
+            $migrationScripts = new MigrationScripts($package, $this->io, $this->composer, $this);
+            $migrationScripts->copy();
+
+            $versionFiles = new VersionFiles($package, $this->io, $this);
+            $versionFiles->copy();
+
+            if (isset($config['permissions'])) {
+                $this->configurePermissions($config['permissions']);
+            }
+
+            $this->processGitIgnore();
+
+            $this->processBuildXml($config);
+
+        } catch (\Exception $e) {
+            $this->io->writeError(sprintf(
+                '    Error installing package, in %s line %d',
+                $e->getFile(),
+                $e->getLine()
+            ));
         }
-
-        if (isset($config['copy'])) {
-            $fileMover = new FileMover($package, $this->io, $this);
-            $fileMover->copyFiles($config['copy']);
-        }
-
-        $migrationScripts = new MigrationScripts($package, $this->io, $this->composer, $this);
-        $migrationScripts->copy();
-
-        $versionFiles = new VersionFiles($package, $this->io, $this);
-        $versionFiles->copy();
-
-        if (isset($config['permissions'])) {
-            $this->configurePermissions($config['permissions']);
-        }
-
-        $this->processGitIgnore();
-
-        $this->processBuildXml($config);
-
     }
 
     /**
