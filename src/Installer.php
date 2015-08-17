@@ -143,11 +143,9 @@ class Installer extends LibraryInstaller
         }
         if ($key === null) {
             return $this->config;
-        }
-        elseif (isset($this->config[$key])) {
+        } elseif (isset($this->config[$key])) {
             return $this->config[$key];
-        }
-        else {
+        } else {
             return $fallback;
         }
     }
@@ -206,5 +204,4 @@ class Installer extends LibraryInstaller
         }
         return $count;
     }
-
 }

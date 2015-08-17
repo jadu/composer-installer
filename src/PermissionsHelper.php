@@ -2,7 +2,8 @@
 
 namespace Jadu\Composer;
 
-class PermissionsHelper {
+class PermissionsHelper
+{
 
     protected $permissionsFilePath;
 
@@ -96,5 +97,4 @@ class PermissionsHelper {
         fputs($file, \PHP_EOL);
         fclose($file);
     }
-
 }
