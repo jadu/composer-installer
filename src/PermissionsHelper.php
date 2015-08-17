@@ -63,9 +63,15 @@ class PermissionsHelper
         $lines = array();
         if (file_exists($this->permissionsFilePath)) {
             foreach (file($this->permissionsFilePath, \FILE_IGNORE_NEW_LINES) as $line) {
-                list(,$file,$permissions) = preg_match('/^(.+?)\s+\[([rwxR]+)\]\\s*$/', $line, $m);
-                if (!empty($file)) {
-                    $lines[$file] = $permissions;
+                if (preg_match('/^(.+?)[ \t]+\[([rwxR]+)\][ \t]*$/', $line, $m)) {
+                    list(,$file,$permissions) = $m;
+                    if (!empty($file)) {
+                        if (isset($lines[$file])) {
+                            $lines[$file] = $this->mergePermissions($lines[$file], $permissions);
+                        } else {
+                            $lines[$file] = $permissions;
+                        }
+                    }
                 }
             }
         }
