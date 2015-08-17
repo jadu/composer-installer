@@ -15,6 +15,14 @@ class PermissionsHelper
         $this->permissionsFilePath = $permissionsFilePath;
     }
 
+    protected function mergePermissions($p1, $p2)
+    {
+        $permissions = array_merge(str_split($p1), str_split($p2));
+        $permissions = array_unique($permissions);
+        sort($permissions);
+        return implode('', $permissions);
+    }
+
     /**
      * Adds each of the file paths in the given array's keys to the permissions file,
      * with the permissions specified in the array member value.
@@ -40,17 +48,17 @@ class PermissionsHelper
             throw new RuntimeException("Error loading existing permissions file", 1);
         }
         foreach ($newFilePermissions as $file => $permissions) {
+            $addedCount++;
             foreach ($filePermissions as $existingFile => &$existingPermissions) {
                 if ($existingFile == $file) {
-                    // if the file is already there, merge the permissions
-                    $mergedPerms = array_merge(str_split($existingPermissions),str_split($permissions));
-                    $mergedPerms = sort(array_unique($mergedPerms));
-                    $existingPermissions = implode('', $mergedPerms);
+                    if ($existingPermissions != $permissions) {
+                        // if the file is already there, merge the permissions
+                        $existingPermissions = $this->mergePermissions($existingPermissions, $permissions);
+                    }
                     continue 2;
                 }
             }
             $filePermissions[$file] = $permissions;
-            $addedCount++;
         }
 
         $this->write($filePermissions);
