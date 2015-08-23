@@ -55,7 +55,7 @@ class MigrationScripts
         }
 
         $rootMigrationsFolder = $this->installer->getRootPath() . '/' . $migrationScriptsFolder;
-        if (!is_dir($rootMigrationsFolder)) {
+        if (!is_dir($rootMigrationsFolder) && !mkdir($rootMigrationsFolder)) {
             $this->io->writeError("    Error: Migrations folder doesn't exist in $rootMigrationsFolder");
             return false;
         }
