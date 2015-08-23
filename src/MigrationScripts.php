@@ -44,16 +44,17 @@ class MigrationScripts
      * Copy any migration scripts from the package into the root folder's upgrades/migrations/ folder
      *
      * Will only copy a migration script if a script with the same sha1sum doesn't exist
+     * @param  string $migrationScriptsFolder   Relative path to the folder containing Version*.php migration scripts
      * @return integer  The number of migration scripts copied, FALSE on error
      */
-    public function copy()
+    public function copy($migrationScriptsFolder = 'upgrades/migrations')
     {
-        $packageMigrationsFolder = $this->installer->getPackageBasePath($this->package) . '/' . Installer::MIGRATIONS_FOLDER;
+        $packageMigrationsFolder = $this->installer->getPackageBasePath($this->package) . '/' . $migrationScriptsFolder;
         if (!is_dir($packageMigrationsFolder)) {
             return 0;
         }
 
-        $rootMigrationsFolder = $this->installer->getRootPath() . '/' . Installer::MIGRATIONS_FOLDER;
+        $rootMigrationsFolder = $this->installer->getRootPath() . '/' . $migrationScriptsFolder;
         if (!is_dir($rootMigrationsFolder)) {
             $this->io->writeError("    Error: Migrations folder doesn't exist in $rootMigrationsFolder");
             return false;

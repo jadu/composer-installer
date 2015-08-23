@@ -16,6 +16,7 @@ class Installer extends LibraryInstaller
     const EXTRA_KEY = 'jadu-install';
 
     const MIGRATIONS_FOLDER = 'upgrades/migrations';
+    const FILESYSTEM_MIGRATIONS_FOLDER = 'upgrades/migrations/filesystem';
 
     const CONSOLE_LINE_LENGTH = 90;
 
@@ -59,7 +60,8 @@ class Installer extends LibraryInstaller
             $migrationScripts->copy();
 
             $versionFiles = new VersionFiles($package, $this->io, $this);
-            $versionFiles->copy();
+            $versionFiles->copy(self::MIGRATIONS_FOLDER);
+            $versionFiles->copy(self::FILESYSTEM_MIGRATIONS_FOLDER);
 
             if (isset($config['permissions'])) {
                 $this->configurePermissions($config['permissions']);
