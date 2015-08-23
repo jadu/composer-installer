@@ -57,11 +57,11 @@ class Installer extends LibraryInstaller
             }
 
             $migrationScripts = new MigrationScripts($package, $this->io, $this->composer, $this);
-            $migrationScripts->copy();
+            $migrationScripts->copy(self::MIGRATIONS_FOLDER);
+            $migrationScripts->copy(self::FILESYSTEM_MIGRATIONS_FOLDER);
 
             $versionFiles = new VersionFiles($package, $this->io, $this);
-            $versionFiles->copy(self::MIGRATIONS_FOLDER);
-            $versionFiles->copy(self::FILESYSTEM_MIGRATIONS_FOLDER);
+            $versionFiles->copy();
 
             if (isset($config['permissions'])) {
                 $this->configurePermissions($config['permissions']);
