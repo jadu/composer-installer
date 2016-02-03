@@ -145,11 +145,11 @@ class Installer extends LibraryInstaller
     public function getConfig(PackageInterface $package, $key = null, $fallback = null)
     {
         if (!$this->config) {
+            $this->config = array();
             $extra = $package->getExtra();
-            if (!isset($extra[self::EXTRA_KEY])) {
-                $this->config = array();
+            if (isset($extra[self::EXTRA_KEY]) && is_array($extra[self::EXTRA_KEY])) {
+                $this->config = $extra[self::EXTRA_KEY];
             }
-            $this->config = $extra[self::EXTRA_KEY];
         }
         if ($key === null) {
             return $this->config;
