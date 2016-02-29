@@ -4,6 +4,7 @@ namespace Jadu\Composer;
 
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use RuntimeException;
 
 class FileMover {
 
