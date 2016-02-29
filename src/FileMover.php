@@ -4,6 +4,7 @@ namespace Jadu\Composer;
 
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use RuntimeException;
 
 class FileMover {
 
@@ -91,6 +92,15 @@ class FileMover {
             }
         }
         else {
+            //  Check if directory where the file will be copied exists first
+            if(!file_exists(dirname($dest))){
+                $success = $this->createFolder(dirname($dest));
+
+                if (!$success) {
+                    throw new RuntimeException("Failed to create folder for $dest");
+                }
+            }
+
             $success = copy($source, $dest);
             if (!$success) {
                 throw new RuntimeException("Failed to copy file to $dest");
@@ -105,6 +115,17 @@ class FileMover {
         }
 
         return true;
+    }
+
+    /**
+     * Creates a folder recursively for a given path
+     * @param $path
+     *
+     * @return bool
+     */
+    public function createFolder($path)
+    {
+        return mkdir($path, 0755, true);
     }
 
     /**

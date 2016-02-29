@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
+
+    <php>
+        <ini name="date.timezone" value="UTC" />
+
+        <!-- The path to the root of a CMS code base. This is added to the include path so core classes can be loaded. -->
+        <env name="JADU_PATH" value="vendor/1-12" />
+    </php>
+</phpunit>

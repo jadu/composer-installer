@@ -10,13 +10,15 @@
     ],
     "license": "proprietary",
     "repositories": [
-        {"type": "composer", "url": "http://toran-proxy.hq.jadu.net/repo/private/"},
-        {"type": "composer", "url": "http://toran-proxy.hq.jadu.net/repo/packagist/"},
-        {"packagist": false}
+        {"type": "composer", "url": "http://toran-proxy.hq.jadu.net/repo/private/"}
     ],
     "require": {
         "composer-plugin-api": "^1.0",
         "jadu/meteor": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "mockery/mockery": "dev-master"
     },
     "autoload": {
         "psr-4": {"Jadu\\Composer\\": "src/"}
